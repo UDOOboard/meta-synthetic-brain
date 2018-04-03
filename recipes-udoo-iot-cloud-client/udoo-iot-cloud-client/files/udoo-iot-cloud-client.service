@@ -1,0 +1,11 @@
+[Unit]
+Description=SECO-IoT-Cloud
+
+[Service]
+Environment=NODE_ENV=production
+ExecStart=/bin/su root -c 'node /usr/share/udoo-iot-cloud-client/index.js'
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
