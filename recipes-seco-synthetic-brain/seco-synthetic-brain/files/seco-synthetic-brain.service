@@ -1,9 +1,9 @@
 [Unit]
-Description=SECO-IoT-Cloud
+Description=SECO-Synthetic-Brain
 
 [Service]
 Environment=NODE_ENV=production
-ExecStart=/bin/su root -c 'node /usr/share/udoo-iot-cloud-client/index.js'
+ExecStart=/bin/su root -c 'node /usr/share/seco-synthetic-brain/index.js'
 Restart=always
 RestartSec=30
 

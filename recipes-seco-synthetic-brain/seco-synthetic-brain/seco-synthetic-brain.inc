@@ -1,18 +1,19 @@
-DESCRIPTION = "Seco-IoT-Client"
+DESCRIPTION = "Seco-Synthetic-Brain"
 HOMEPAGE = "http://seco.com"
 LICENSE = "Apache-2.0"
 
 DEPENDS = "nodejs-native"
 RDEPENDS_${PN} += "bash python nodejs-npm"
 
+OTHER_PN = "udoo-iot-agent"
+
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
-SRC_URI = "file://${PN}_${PV}.zip \
-	file://udoo-iot-cloud-client.service \
+SRC_URI = "file://seco-synthetic-brain.service \
+	https://github.com/UDOOboard/${OTHER_PN}/archive/v${PV}/${OTHER_PN}-${PV}.zip \
 	"
-# https://github.com/${PN}/${PN}/releases/download/${PV}/${PN}-${PV}.zip
 
-S = "${WORKDIR}/${PN}-${PV}"
+S = "${WORKDIR}/${OTHER_PN}-${PV}"
 
 def get_nodejs_arch(d):
     target_arch = d.getVar('TRANSLATED_TARGET_ARCH', True)
