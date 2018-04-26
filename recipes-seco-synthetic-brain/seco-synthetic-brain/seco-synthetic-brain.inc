@@ -45,7 +45,7 @@ do_compile() {
 	export LZZ_COMPAT=1
 
 	# Clear cache
-	npm cache clear
+	npm cache clean
 
 	# Remove zwave - ek5
 	sed '/openzwave-shared/d' -i  ${S}/package.json
@@ -54,10 +54,12 @@ do_compile() {
 	npm --registry=${NPM_REGISTRY} --arch=${NPM_ARCH} --target_arch=${NPM_ARCH} ${NPM_INSTALL_FLAGS} install
 
 	rm -rf ${S}/node_modules/lzz-gyp/lzz-compiled
+	npm --arch=${NPM_ARCH} --target_arch=${NPM_ARCH} rebuild
 
-	npm rebuild
+	npm --arch=${NPM_ARCH} --target_arch=${NPM_ARCH} prune --production
+	rm -rf ${S}/node_modules/lzz-gyp/lzz-source/release_build
+	rm -rf ${S}/node_modules/lzz-gyp/lzz-source/lazycpp
 
-	npm prune --production
 }
 
 do_install() {
