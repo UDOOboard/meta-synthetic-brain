@@ -10,7 +10,7 @@ OTHER_PN = "udoo-iot-agent"
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 SRC_URI = "file://seco-synthetic-brain.service \
-	https://github.com/UDOOboard/${OTHER_PN}/archive/v${PV}/${OTHER_PN}-${PV}.zip \
+	git://github.com/UDOOboard/${OTHER_PN};branch=develop_aws; \
 	"
 
 S = "${WORKDIR}/${OTHER_PN}-${PV}"
