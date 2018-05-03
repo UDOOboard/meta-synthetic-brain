@@ -45,8 +45,6 @@ do_compile() {
 
 	export LZZ_COMPAT=1
 
-	rm -rf ${S}/debian
-
 	# Clear cache
 	npm cache clean
 
@@ -55,11 +53,25 @@ do_compile() {
 
 	# Install
 	npm --registry=${NPM_REGISTRY} --arch=${NPM_ARCH} --target_arch=${NPM_ARCH} ${NPM_INSTALL_FLAGS} install
-	npm --arch=${NPM_ARCH} --target_arch=${NPM_ARCH} prune --production
 
+	# Clean
+	npm dedupe --arch=${NPM_ARCH} --target_arch=${NPM_ARCH} 
+
+	rm -rf ${S}/debian
+	rm -rf ${S}/node_modules/lzz-gyp/lzz-source
 	rm -rf ${S}/node_modules/lzz-gyp/lzz-compiled
-	rm -rf ${S}/node_modules/lzz-gyp/lzz-source/release_build
-	rm -rf ${S}/node_modules/lzz-gyp/lzz-source/lazycpp
+	rm -rf ${S}/node_modules/better-sqlite3/build/Release/obj
+	rm -rf ${S}/node_modules/better-sqlite3/build/Release/obj.target
+	find ${S}/node_modules -type d \( -name 'test*' -o -name 'doc*' -o \
+		-name 'example*' -o -name 'benchmark*' \) |
+		xargs rm -rf 
+	find ${S}/node_modules -name "Makefile" -o ".travis.yml" -o -name ".gitignore" -o \ 
+		-name "*.md" -o -name "*.h" -o -name "*.c" -o -name "*.cpp" |
+		xargs rm -f
+	find ${S}/node_modules -name "*.o" -o -name "*.node" -o -name "*.a" |
+		xargs -L 1 strip 
+
+	npm --arch=${NPM_ARCH} --target_arch=${NPM_ARCH} prune --production
 
 }
 
