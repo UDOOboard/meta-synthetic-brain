@@ -8,16 +8,15 @@ Seco layer to add support for the Seco IoT Agent (SECO Synthetic Brain).
 
 Configuration
 =============
-1. Clone the `meta-syntethic-brain` layer to your project directory.
-2. Add the `meta-syntethic-brain` layer to `conf/bblayers.conf`
+1. Clone the `meta-synthetic-brain` layer to your project directory.
+2. Add the `meta-synthetic-brain` layer to `conf/bblayers.conf`
 ```bitbake
-	BBLAYERS += "path/to/meta-syntethic-brain"
+	BBLAYERS += "path/to/meta-synthetic-brain"
 ```
 3. Add dependency layers to `conf/bblayers.conf`
 ```bitbake
 	BBLAYERS += "path/to/meta-openembedded/meta-oe"
 	BBLAYERS += "path/to/meta-openembedded/meta-python"
-	BBLAYERS += "path/to/meta-java"
 ```
 Usage
 =====
