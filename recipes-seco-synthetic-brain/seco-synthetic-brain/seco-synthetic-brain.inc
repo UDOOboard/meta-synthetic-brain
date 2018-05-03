@@ -10,10 +10,11 @@ OTHER_PN = "udoo-iot-agent"
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 SRC_URI = "file://seco-synthetic-brain.service \
-	git://github.com/UDOOboard/${OTHER_PN};branch=develop_aws; \
+	git://git@github.com/UDOOboard/${OTHER_PN};protocol=ssh;branch=develop_aws; \
 	"
 
-S = "${WORKDIR}/${OTHER_PN}-${PV}"
+#S = "${WORKDIR}/${OTHER_PN}-${PV}"
+S = "${WORKDIR}/git"
 
 def get_nodejs_arch(d):
     target_arch = d.getVar('TRANSLATED_TARGET_ARCH', True)
@@ -44,6 +45,8 @@ do_compile() {
 
 	export LZZ_COMPAT=1
 
+	rm -rf ${S}/debian
+
 	# Clear cache
 	npm cache clean
 
@@ -52,11 +55,9 @@ do_compile() {
 
 	# Install
 	npm --registry=${NPM_REGISTRY} --arch=${NPM_ARCH} --target_arch=${NPM_ARCH} ${NPM_INSTALL_FLAGS} install
+	npm --arch=${NPM_ARCH} --target_arch=${NPM_ARCH} prune --production
 
 	rm -rf ${S}/node_modules/lzz-gyp/lzz-compiled
-	npm --arch=${NPM_ARCH} --target_arch=${NPM_ARCH} rebuild
-
-	npm --arch=${NPM_ARCH} --target_arch=${NPM_ARCH} prune --production
 	rm -rf ${S}/node_modules/lzz-gyp/lzz-source/release_build
 	rm -rf ${S}/node_modules/lzz-gyp/lzz-source/lazycpp
 
