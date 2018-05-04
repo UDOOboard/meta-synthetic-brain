@@ -7,3 +7,5 @@ SRCREV = "${AUTOREV}"
 RDEPENDS_${PN} += "nodejs (>= 6.0.0)"
 
 PR = "r0"
+
+INSANE_SKIP_${PN} = "staticdev"
