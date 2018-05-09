@@ -65,11 +65,10 @@ do_compile() {
 	find ${S}/node_modules -type d \( -name 'test*' -o -name 'doc*' -o \
 		-name 'example*' -o -name 'benchmark*' \) |
 		xargs rm -rf 
-	find ${S}/node_modules -name "Makefile" -o ".travis.yml" -o -name ".gitignore" -o \ 
-		-name "*.md" -o -name "*.h" -o -name "*.c" -o -name "*.cpp" |
+	find ${S}/node_modules -name "Makefile" -o -name ".travis.yml" -o \
+		-name ".gitignore" -o -name "*.md" -o -name "*.h" -o \ 
+		-name "*.c" -o -name "*.cpp" |
 		xargs rm -f
-	find ${S}/node_modules -name "*.o" -o -name "*.node" -o -name "*.a" |
-		xargs -L 1 strip 
 
 	npm --arch=${NPM_ARCH} --target_arch=${NPM_ARCH} prune --production
 
