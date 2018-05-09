@@ -37,7 +37,6 @@ CLIENT_INSTALL_DIR = "${prefix}/share/"
 NPM_CACHE_DIR ?= "${WORKDIR}/npm_cache"
 NPM_REGISTRY ?= "http://registry.npmjs.org/"
 NPM_ARCH = "${@get_nodejs_arch(d)}"
-#NPM_INSTALL_FLAGS ?= "--build-from-source --production --without-ssl --insecure --no-optional --verbose"
 NPM_INSTALL_FLAGS ?= "--build-from-source --production --no-optional --verbose"
 
 do_compile() {
@@ -48,8 +47,15 @@ do_compile() {
 	# Clear cache
 	npm cache clean
 
-	# Remove zwave - ek5
+	# Remove optional dependencies
+	sed '/function-queue/d' -i  ${S}/package.json
 	sed '/openzwave-shared/d' -i  ${S}/package.json
+	sed '/request/d' -i  ${S}/package.json
+	sed '/serialport/d' -i  ${S}/package.json
+	sed '/udoo-arduino-manager/d' -i  ${S}/package.json
+	sed '/udoo-blu/d' -i  ${S}/package.json
+	# Fix invalid JSON
+	sed '$!N;s/",\n  }/"\n  }/;P;D' -i  ${S}/package.json
 
 	# Install
 	npm --registry=${NPM_REGISTRY} --arch=${NPM_ARCH} --target_arch=${NPM_ARCH} ${NPM_INSTALL_FLAGS} install
@@ -57,14 +63,19 @@ do_compile() {
 	# Clean
 	npm dedupe --arch=${NPM_ARCH} --target_arch=${NPM_ARCH} 
 
+	rm -rf ${S}/test
 	rm -rf ${S}/debian
+
 	rm -rf ${S}/node_modules/lzz-gyp/lzz-source
 	rm -rf ${S}/node_modules/lzz-gyp/lzz-compiled
+	rm -rf ${S}/node_modules/better-sqlite3/deps
 	rm -rf ${S}/node_modules/better-sqlite3/build/Release/obj
 	rm -rf ${S}/node_modules/better-sqlite3/build/Release/obj.target
+
 	find ${S}/node_modules -type d \( -name 'test*' -o -name 'doc*' -o \
 		-name 'example*' -o -name 'benchmark*' \) |
-		xargs rm -rf 
+		xargs rm -rf
+
 	find ${S}/node_modules -name "Makefile" -o -name ".travis.yml" -o \
 		-name ".gitignore" -o -name "*.md" -o -name "*.h" -o \ 
 		-name "*.c" -o -name "*.cpp" |
