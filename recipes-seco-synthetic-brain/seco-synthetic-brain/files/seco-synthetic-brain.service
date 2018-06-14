@@ -1,5 +1,5 @@
 [Unit]
-Description=SECO-Synthetic-Brain
+Description=SECO Synthetic Brain Agent
 
 [Service]
 Environment=NODE_ENV=production

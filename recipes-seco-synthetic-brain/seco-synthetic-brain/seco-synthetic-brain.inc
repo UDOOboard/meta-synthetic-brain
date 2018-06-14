@@ -1,11 +1,11 @@
-DESCRIPTION = "Seco-Synthetic-Brain"
-HOMEPAGE = "http://seco.com"
+DESCRIPTION = "SECO Synthetic Brain Agent"
+HOMEPAGE = "https://www.seco.com"
 LICENSE = "Apache-2.0"
 
 DEPENDS = "nodejs-native"
-RDEPENDS_${PN} += "bash python nodejs-npm"
+RDEPENDS_${PN} += "bash python nodejs nodejs-npm"
 
-OTHER_PN = "udoo-iot-agent"
+INSANE_SKIP_${PN} = "staticdev"
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
@@ -114,3 +114,17 @@ FILES_${PN} = "\
 "
 
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
+
+# User Management
+inherit useradd
+
+IOT_USER = "seco-iot"
+IOT_GROUP = "seco-iot"
+#from device-cloud-user.inc
+TRUSTED_GID = "1005"
+
+USERADD_PACKAGES = "${PN}"
+USERADD_PARAM_${PN}  = "-r -s ${sbindir}/nologin -g ${TRUSTED_GID} ${IOT_USER}"
+GROUPADD_PARAM_${PN} = "-f -r -o -g ${TRUSTED_GID} ${IOT_GROUP}"
+
+
