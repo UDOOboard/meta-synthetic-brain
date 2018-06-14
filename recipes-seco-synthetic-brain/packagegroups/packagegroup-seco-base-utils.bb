@@ -8,8 +8,8 @@ RDEPENDS_seco-base-utils = "\
     curl \
     dhcp-client \
     minicom \
-    ntp \
     wget \
+    ntpdate \
     vim \
     "
 
