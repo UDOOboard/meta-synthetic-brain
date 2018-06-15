@@ -39,6 +39,17 @@ NPM_REGISTRY ?= "http://registry.npmjs.org/"
 NPM_ARCH = "${@get_nodejs_arch(d)}"
 NPM_INSTALL_FLAGS ?= "--build-from-source --production --no-optional --verbose"
 
+# User Management
+inherit useradd
+
+IOT_USER = "seco-iot"
+IOT_GROUP = "seco-iot"
+
+USERADD_PACKAGES = "${PN}"
+USERADD_PARAM_${PN}  = "-r -d ${localstatedir}/seco-sb \
+			-s ${sbindir}/nologin \
+			-U ${IOT_USER}"
+
 do_compile() {
 	export NPM_CONFIG_CACHE="${NPM_CACHE_DIR}"
 
@@ -98,6 +109,10 @@ do_install() {
 	
 	install -d ${D}${systemd_unitdir}/system/
 	install -m 0644 ${WORKDIR}/${PN}.service ${D}${systemd_unitdir}/system/
+
+	install -d -o ${IOT_USER} -g ${IOT_GROUP} ${D}${localstatedir}/seco-sb/
+	install -d -o ${IOT_USER} -g ${IOT_GROUP} ${D}${localstatedir}/seco-sb/db
+	install -d -o ${IOT_USER} -g ${IOT_GROUP} ${D}${localstatedir}/seco-sb/certs
 }
 
 inherit systemd
@@ -111,20 +126,8 @@ FILES_${PN} = "\
 	${CLIENT_INSTALL_DIR}${PN} \
 	${bindir} \
 	${systemd_unitdir} \
+	${localstatedir}/seco-sb \
 "
 
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
-
-# User Management
-inherit useradd
-
-IOT_USER = "seco-iot"
-IOT_GROUP = "seco-iot"
-#from device-cloud-user.inc
-TRUSTED_GID = "1005"
-
-USERADD_PACKAGES = "${PN}"
-USERADD_PARAM_${PN}  = "-r -s ${sbindir}/nologin -g ${TRUSTED_GID} ${IOT_USER}"
-GROUPADD_PARAM_${PN} = "-f -r -o -g ${TRUSTED_GID} ${IOT_GROUP}"
-
 
