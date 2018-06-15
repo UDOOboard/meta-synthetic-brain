@@ -2,8 +2,10 @@
 Description=SECO Synthetic Brain Agent
 
 [Service]
-Environment=NODE_ENV=production
-ExecStart=/bin/su root -c 'node /usr/share/seco-synthetic-brain/index.js'
+User=seco-iot
+Group=seco-iot
+Environment=NODE_ENV=production CONFIG_PATH=/var/seco-sb
+ExecStart=/usr/bin/node /usr/share/seco-synthetic-brain/index.js
 Restart=always
 RestartSec=30
 
