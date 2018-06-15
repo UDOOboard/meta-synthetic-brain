@@ -50,6 +50,8 @@ USERADD_PARAM_${PN}  = "-r -d ${localstatedir}/seco-sb \
 			-s ${sbindir}/nologin \
 			-U ${IOT_USER}"
 
+DELETE_COMMUNITY_FILES_${PN} ?= "1"
+
 do_compile() {
 	export NPM_CONFIG_CACHE="${NPM_CACHE_DIR}"
 
@@ -91,6 +93,22 @@ do_compile() {
 		-name ".gitignore" -o -name "*.md" -o -name "*.h" -o \ 
 		-name "*.c" -o -name "*.cpp" |
 		xargs rm -f
+
+	if [ "${DELETE_COMMUNITY_FILES_${PN}}" -eq "1" ]
+	then
+		rm -rf \
+			src/mqtt/mqttGw.js \
+			src/mqtt/mqttAwsUdooGw.js \
+			src/mqtt/payload/udooMqttPayload.js \
+			src/manager/AwsCertsManager.js \
+			src/manager/LocalHttpManager.js \
+			src/manager/ReqManager.js \
+			src/provider/arduinoProvider.js \
+			src/provider/bluProvider.js \
+			src/provider/zWaveProvider.js \
+			src/provider/subProvider/arduino/ \
+			src/provider/subProvider/blu/
+	fi
 
 	npm --arch=${NPM_ARCH} --target_arch=${NPM_ARCH} prune --production
 
