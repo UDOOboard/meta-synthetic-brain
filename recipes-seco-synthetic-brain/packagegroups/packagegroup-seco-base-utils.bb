@@ -7,9 +7,13 @@ PACKAGES = "seco-base-utils"
 RDEPENDS_seco-base-utils = "\
     curl \
     dhcp-client \
+    ifupdown \
     minicom \
-    wget \
     ntpdate \
+    packagegroup-core-ssh-openssh \
+    ppp \
+    setserial \
     vim \
+    wget \
     "
 
