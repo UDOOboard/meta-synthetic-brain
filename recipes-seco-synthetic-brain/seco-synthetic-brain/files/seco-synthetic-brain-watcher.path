@@ -1,5 +1,5 @@
 [Path]
-PathModified=/var/seco-sb/config.json
+PathModified=/var/lib/seco-iot/config.json
 
 [Install]
 WantedBy=multi-user.target

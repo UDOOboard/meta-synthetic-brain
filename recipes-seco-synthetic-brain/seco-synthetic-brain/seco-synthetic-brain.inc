@@ -47,9 +47,10 @@ inherit useradd
 
 IOT_USER = "seco-iot"
 IOT_GROUP = "seco-iot"
+IOT_USERDIR = "${localstatedir}/lib/${IOT_USER}"
 
 USERADD_PACKAGES = "${PN}"
-USERADD_PARAM_${PN}  = "-r -d ${localstatedir}/seco-sb \
+USERADD_PARAM_${PN}  = "-r -d ${IOT_USERDIR} \
 			-s ${sbindir}/nologin \
 			-U ${IOT_USER}"
 
@@ -74,7 +75,10 @@ do_compile() {
 	sed '$!N;s/",\n  }/"\n  }/;P;D' -i  ${S}/package.json
 
 	# Install
-	npm --registry=${NPM_REGISTRY} --arch=${NPM_ARCH} --target_arch=${NPM_ARCH} ${NPM_INSTALL_FLAGS} install
+	npm --registry=${NPM_REGISTRY} \
+		--arch=${NPM_ARCH} \
+		--target_arch=${NPM_ARCH} \
+		${NPM_INSTALL_FLAGS} install
 
 	# Clean
 	npm dedupe --arch=${NPM_ARCH} --target_arch=${NPM_ARCH} 
@@ -136,9 +140,9 @@ do_install() {
 	install -d ${D}${sysconfdir}/tmpfiles.d
 	install -m 0644 ${WORKDIR}/${PN}-tmpfiles.conf ${D}${sysconfdir}/tmpfiles.d/
 
-	install -d -o ${IOT_USER} -g ${IOT_GROUP} ${D}${localstatedir}/seco-sb/
-	install -d -o ${IOT_USER} -g ${IOT_GROUP} ${D}${localstatedir}/seco-sb/db
-	install -d -o ${IOT_USER} -g ${IOT_GROUP} ${D}${localstatedir}/seco-sb/certs
+	install -d -o ${IOT_USER} -g ${IOT_GROUP} ${D}${IOT_USERDIR}/
+	install -d -o ${IOT_USER} -g ${IOT_GROUP} ${D}${IOT_USERDIR}/db
+	install -d -o ${IOT_USER} -g ${IOT_GROUP} ${D}${IOT_USERDIR}/certs
 }
 
 inherit systemd
@@ -152,7 +156,7 @@ FILES_${PN} = "\
 	${CLIENT_INSTALL_DIR}${PN} \
 	${bindir} \
 	${systemd_unitdir} \
-	${localstatedir}/seco-sb \
+	${IOT_USERDIR} \
 	${sysconfdir}/tmpfiles.d/${PN}-tmpfiles.conf \
 "
 
