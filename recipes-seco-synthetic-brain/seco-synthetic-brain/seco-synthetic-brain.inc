@@ -10,6 +10,8 @@ INSANE_SKIP_${PN} = "staticdev"
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 SRC_URI = "file://seco-synthetic-brain.service \
+	file://seco-synthetic-brain-watcher.service \
+	file://seco-synthetic-brain-watcher.path \
 	git://git@secogit.seco.com:3222/iot/agent.git;protocol=ssh;branch=develop_aws; \
 	"
 
@@ -127,6 +129,8 @@ do_install() {
 	
 	install -d ${D}${systemd_unitdir}/system/
 	install -m 0644 ${WORKDIR}/${PN}.service ${D}${systemd_unitdir}/system/
+	install -m 0644 ${WORKDIR}/${PN}-watcher.service ${D}${systemd_unitdir}/system/
+	install -m 0644 ${WORKDIR}/${PN}-watcher.path ${D}${systemd_unitdir}/system/
 
 	install -d -o ${IOT_USER} -g ${IOT_GROUP} ${D}${localstatedir}/seco-sb/
 	install -d -o ${IOT_USER} -g ${IOT_GROUP} ${D}${localstatedir}/seco-sb/db
@@ -136,7 +140,7 @@ do_install() {
 inherit systemd
 
 SYSTEMD_AUTO_ENABLE = "enable"
-SYSTEMD_SERVICE_${PN} = "${PN}.service"
+SYSTEMD_SERVICE_${PN} = "${PN}.service ${PN}-watcher.path"
 
 PACKAGES = "${PN}"
 
