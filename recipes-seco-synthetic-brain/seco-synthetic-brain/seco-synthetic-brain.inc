@@ -12,6 +12,7 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 SRC_URI = "file://seco-synthetic-brain.service \
 	file://seco-synthetic-brain-watcher.service \
 	file://seco-synthetic-brain-watcher.path \
+	file://seco-synthetic-brain-tmpfiles.conf \
 	git://git@secogit.seco.com:3222/iot/agent.git;protocol=ssh;branch=develop_aws; \
 	"
 
@@ -132,6 +133,9 @@ do_install() {
 	install -m 0644 ${WORKDIR}/${PN}-watcher.service ${D}${systemd_unitdir}/system/
 	install -m 0644 ${WORKDIR}/${PN}-watcher.path ${D}${systemd_unitdir}/system/
 
+	install -d ${D}${sysconfdir}/tmpfiles.d
+	install -m 0644 ${WORKDIR}/${PN}-tmpfiles.conf ${D}${sysconfdir}/tmpfiles.d/
+
 	install -d -o ${IOT_USER} -g ${IOT_GROUP} ${D}${localstatedir}/seco-sb/
 	install -d -o ${IOT_USER} -g ${IOT_GROUP} ${D}${localstatedir}/seco-sb/db
 	install -d -o ${IOT_USER} -g ${IOT_GROUP} ${D}${localstatedir}/seco-sb/certs
@@ -149,6 +153,7 @@ FILES_${PN} = "\
 	${bindir} \
 	${systemd_unitdir} \
 	${localstatedir}/seco-sb \
+	${sysconfdir}/tmpfiles.d/${PN}-tmpfiles.conf \
 "
 
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
