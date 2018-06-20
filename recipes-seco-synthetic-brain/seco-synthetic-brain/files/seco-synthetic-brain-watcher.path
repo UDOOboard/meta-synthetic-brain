@@ -1,5 +1,7 @@
 [Path]
-PathModified=/var/lib/seco-iot/config.json
+PathModified=/var/lib/seco-iot/agent/config.json
+PathModified=/var/lib/seco-iot/agent/actuators.json
+PathModified=/var/lib/seco-iot/agent/sensors.json
 
 [Install]
 WantedBy=multi-user.target
