@@ -4,7 +4,9 @@ Description=SECO Synthetic Brain Agent
 [Service]
 User=seco-iot
 Group=seco-iot
-Environment=NODE_ENV=production CONFIG_PATH=/var/lib/seco-iot DB_PATH=/var/lib/seco-iot/db
+Environment=NODE_ENV=production
+Environment=CONFIG_PATH=/var/lib/seco-iot/agent
+Environment=DB_PATH=/var/lib/seco-iot/db
 ExecStart=/usr/bin/node /usr/share/seco-synthetic-brain/index.js
 Restart=always
 RestartSec=30
