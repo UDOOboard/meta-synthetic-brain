@@ -14,7 +14,9 @@ RDEPENDS_seco-base-utils = "\
     ntpdate \
     packagegroup-core-ssh-openssh \
     ppp \
+    ppp-tools \
     setserial \
+    usbutils \
     vim \
     which \
     wget \
