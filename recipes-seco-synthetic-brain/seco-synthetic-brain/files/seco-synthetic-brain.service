@@ -6,7 +6,7 @@ User=seco-iot
 Group=seco-iot
 Environment=NODE_ENV=production
 Environment=CONFIG_PATH=/var/lib/seco-iot/agent
-Environment=DB_PATH=/var/lib/seco-iot/db
+Environment=DB_PATH=/var/lib/seco-iot/agent/db
 ExecStart=/usr/bin/node /usr/share/seco-synthetic-brain/index.js
 Restart=always
 RestartSec=30
