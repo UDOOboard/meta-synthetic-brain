@@ -8,7 +8,6 @@ RDEPENDS_seco-base-utils = "\
     curl \
     dhcp-client \
     dnsmasq \
-    ifupdown \
     lsof \
     minicom \
     ntpdate \
