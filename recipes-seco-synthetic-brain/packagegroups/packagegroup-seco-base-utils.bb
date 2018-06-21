@@ -11,10 +11,9 @@ RDEPENDS_seco-base-utils = "\
     dnsmasq \
     lsof \
     minicom \
+    modem-utils \
     ntpdate \
     packagegroup-core-ssh-openssh \
-    ppp \
-    ppp-tools \
     setserial \
     usbutils \
     vim \
