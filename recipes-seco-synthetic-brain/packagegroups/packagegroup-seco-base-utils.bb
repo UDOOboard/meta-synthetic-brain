@@ -5,6 +5,7 @@ inherit packagegroup
 PACKAGES = "seco-base-utils"
 
 RDEPENDS_seco-base-utils = "\
+    bridge-utils \
     curl \
     dhcp-client \
     dnsmasq \
