@@ -51,6 +51,7 @@ IOT_USERDIR = "${localstatedir}/lib/${IOT_USER}"
 
 USERADD_PACKAGES = "${PN}"
 USERADD_PARAM_${PN}  = "-r -d ${IOT_USERDIR} \
+			-G tty \
 			-s ${sbindir}/nologin \
 			-U ${IOT_USER}"
 
