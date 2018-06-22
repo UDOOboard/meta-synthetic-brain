@@ -141,9 +141,9 @@ do_install() {
 	install -d ${D}${sysconfdir}/tmpfiles.d
 	install -m 0644 ${WORKDIR}/${PN}-tmpfiles.conf ${D}${sysconfdir}/tmpfiles.d/
 
-	install -d -o ${IOT_USER} -g ${IOT_GROUP} ${D}${IOT_USERDIR}/agent
-	install -d -o ${IOT_USER} -g ${IOT_GROUP} ${D}${IOT_USERDIR}/agent/db
-	install -d -o ${IOT_USER} -g ${IOT_GROUP} ${D}${IOT_USERDIR}/agent/certs
+	#install -d -o ${IOT_USER} -g ${IOT_GROUP} ${D}${IOT_USERDIR}/agent
+	#install -d -o ${IOT_USER} -g ${IOT_GROUP} ${D}${IOT_USERDIR}/agent/db
+	#install -d -o ${IOT_USER} -g ${IOT_GROUP} ${D}${IOT_USERDIR}/agent/certs
 }
 
 inherit systemd
