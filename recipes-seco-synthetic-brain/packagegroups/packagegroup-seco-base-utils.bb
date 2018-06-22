@@ -8,7 +8,6 @@ RDEPENDS_seco-base-utils = "\
     bridge-utils \
     curl \
     dhcp-client \
-    dnsmasq \
     lsof \
     minicom \
     modem-utils \
