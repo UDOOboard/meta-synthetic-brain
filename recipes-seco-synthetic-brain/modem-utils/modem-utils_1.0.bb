@@ -6,7 +6,7 @@ RDEPENDS_${PN} += "bash ppp ppp-tools"
 
 SRC_URI = "git://git@secogit.seco.com:3222/iot/modem-utils.git;protocol=ssh;"
 SRCREV = "master"
-PR = "r6"
+PR = "r0"
 
 S = "${WORKDIR}/git"
 INSTALL_DIR = "${prefix}/sbin"

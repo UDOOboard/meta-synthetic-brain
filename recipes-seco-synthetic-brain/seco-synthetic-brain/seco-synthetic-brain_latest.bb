@@ -4,6 +4,6 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=a3d2aceccb688f7f1e6293409419fa3c"
 
 PV = "2.0.0+git${SRCPV}"
 SRCBRANCH = "develop_aws"
-SRCREV = "470ca0adf89be48009b025c0dc578f8c46ab0462"
+SRCREV = "3fe75ab55e37101a31ca59c24add1df9dafd740e"
+PR = "r7"
 
-PR = "r4"
