@@ -2,8 +2,8 @@ DESCRIPTION = "SECO Synthetic Brain Agent"
 HOMEPAGE = "https://www.seco.com"
 LICENSE = "Apache-2.0"
 
-DEPENDS = "nodejs-native"
-RDEPENDS_${PN} += "bash python nodejs nodejs-npm"
+DEPENDS = "nodejs-native seco-iot-user"
+RDEPENDS_${PN} += "bash python nodejs nodejs-npm seco-iot-user"
 
 INSANE_SKIP_${PN} = "staticdev"
 
@@ -16,8 +16,11 @@ SRC_URI = "file://seco-synthetic-brain.service \
 	git://git@secogit.seco.com:3222/iot/agent.git;protocol=ssh;branch=develop_aws; \
 	"
 
-#S = "${WORKDIR}/${OTHER_PN}-${PV}"
 S = "${WORKDIR}/git"
+
+IOT_USER = "seco-iot"
+IOT_GROUP = "seco-iot"
+IOT_USERDIR = "${localstatedir}/lib/${IOT_USER}"
 
 def get_nodejs_arch(d):
     target_arch = d.getVar('TRANSLATED_TARGET_ARCH', True)
@@ -41,19 +44,6 @@ NPM_CACHE_DIR ?= "${WORKDIR}/npm_cache"
 NPM_REGISTRY ?= "http://registry.npmjs.org/"
 NPM_ARCH = "${@get_nodejs_arch(d)}"
 NPM_INSTALL_FLAGS ?= "--build-from-source --production --no-optional --verbose"
-
-# User Management
-inherit useradd
-
-IOT_USER = "seco-iot"
-IOT_GROUP = "seco-iot"
-IOT_USERDIR = "${localstatedir}/lib/${IOT_USER}"
-
-USERADD_PACKAGES = "${PN}"
-USERADD_PARAM_${PN}  = "-r -d ${IOT_USERDIR} \
-			-G tty \
-			-s ${sbindir}/nologin \
-			-U ${IOT_USER}"
 
 DELETE_COMMUNITY_FILES_${PN} ?= "1"
 
@@ -141,9 +131,12 @@ do_install() {
 	install -d ${D}${sysconfdir}/tmpfiles.d
 	install -m 0644 ${WORKDIR}/${PN}-tmpfiles.conf ${D}${sysconfdir}/tmpfiles.d/
 
-	install -d -o ${IOT_USER} -g ${IOT_GROUP} ${D}${IOT_USERDIR}/agent
-	install -d -o ${IOT_USER} -g ${IOT_GROUP} ${D}${IOT_USERDIR}/agent/db
-	install -d -o ${IOT_USER} -g ${IOT_GROUP} ${D}${IOT_USERDIR}/agent/certs
+	install -d -m 0755 ${D}${IOT_USERDIR}/agent
+	install -d -m 0751 ${D}${IOT_USERDIR}/agent/db
+	install -d -m 0751 ${D}${IOT_USERDIR}/agent/certs
+
+	chown -R ${IOT_USER} ${D}${IOT_USERDIR}
+	chgrp -R ${IOT_USER} ${D}${IOT_USERDIR}
 }
 
 inherit systemd
@@ -154,10 +147,10 @@ SYSTEMD_SERVICE_${PN} = "${PN}.service ${PN}-watcher.path"
 PACKAGES = "${PN}"
 
 FILES_${PN} = "\
+	${IOT_USERDIR}/agent \
 	${CLIENT_INSTALL_DIR}${PN} \
 	${bindir} \
 	${systemd_unitdir} \
-	${IOT_USERDIR} \
 	${sysconfdir}/tmpfiles.d/${PN}-tmpfiles.conf \
 "
 
